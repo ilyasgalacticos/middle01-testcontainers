@@ -1,11 +1,13 @@
 package kz.bitlab.middle01.middle01testcontainers.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import kz.bitlab.middle01.middle01testcontainers.model.Item;
 import kz.bitlab.middle01.middle01testcontainers.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,5 +37,12 @@ public class ItemService {
         List<Item> items = itemRepository.findAll();
         log.info("Items retrieved with size {}", items.size());
         return items;
+    }
+
+    public void deleteItemById(Long id){
+        if(!itemRepository.existsById(id)){
+            throw new EntityNotFoundException("Item not found by id: " + id);
+        }
+        itemRepository.deleteById(id);
     }
 }
